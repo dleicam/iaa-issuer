@@ -1,0 +1,45 @@
+{
+  "name": "iaa-issuer",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:frontend": "vite",
+    "dev:backend": "nodemon --watch src/backend --ext ts --exec \"tsx\" src/backend/server.ts",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build:frontend": "tsc && vite build",
+    "build:backend": "tsc -p tsconfig.backend.json",
+    "build": "npm run build:frontend && npm run build:backend",
+    "preview": "vite preview",
+    "start": "node dist/backend/server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "did-jwt": "^8.0.15",
+    "did-jwt-vc": "^4.0.13",
+    "did-resolver": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jose": "^6.0.11",
+    "jsonwebtoken": "^9.0.2",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
+    "web-did-resolver": "^2.0.30"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.20",
+    "@vitest/coverage-v8": "^3.1.4",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  }
+}

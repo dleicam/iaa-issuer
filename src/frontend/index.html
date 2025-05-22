@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IAA - Issuer of Verifiable Credentials</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <h1>IAA</h1>
+        <p>Issuer of Verifiable Credentials</p>
+    </div>
+    <nav class="nav">
+        <ul>
+            <li><a href="#" id="nav-home" class="active">Home</a></li>
+            <li><a href="#" id="nav-dashboard">Dashboard</a></li>
+            <li><a href="#" id="nav-verify">Verify Credentials</a></li>
+            <li><a href="#" id="nav-about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main id="app">
+    <!-- Home Page (Default) -->
+    <section id="home-page" class="page active">
+        <div class="hero">
+            <h2>Welcome to IAA</h2>
+            <p>The trusted issuer of Verifiable Credentials</p>
+            <div class="cta-buttons">
+                <button id="wallet-login-button" class="primary-button">Login with Verifiable Credential</button>
+                <button id="verify-button" class="secondary-button">Verify a Credential</button>
+            </div>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <h3>Secure Authentication</h3>
+                <p>Login using your Portuguese Citizen Card with RS265 signatures</p>
+            </div>
+            <div class="feature">
+                <h3>Credential Issuance</h3>
+                <p>Request and receive verifiable credentials as an IAA employee or HVAC technician</p>
+            </div>
+            <div class="feature">
+                <h3>Public Verification</h3>
+                <p>Verify the authenticity of any credential or presentation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Page (Hidden by default) -->
+    <section id="dashboard-page" class="page">
+        <h2>Your Dashboard</h2>
+        <p class="login-required-message">Please login to view your dashboard</p>
+        <div class="dashboard-content" style="display: none;">
+            <div class="user-info">
+                <h3>User Information</h3>
+                <p>Name: <span id="user-name">-</span></p>
+                <p>DID: <span id="user-did">-</span></p>
+                <p>Email: <span id="user-email">-</span></p>
+            </div>
+            <div class="credentials-section">
+                <h3>Your Credentials</h3>
+                <div id="credentials-list" class="credentials-list">
+                    <p>No credentials found</p>
+                </div>
+                <div class="request-credential">
+                    <h3>Request New Credential</h3>
+                    <select id="credential-type">
+                        <option value="IAAEmployee">IAA Employee</option>
+                        <option value="HVACTechnician">HVAC Technician</option>
+                    </select>
+                    <button id="request-credential-button" class="primary-button">Request Credential</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verify Page -->
+    <section id="verify-page" class="page">
+        <h2>Verify a Credential</h2>
+        <p>Paste a Verifiable Credential or Presentation to verify its authenticity</p>
+        <div class="verify-form">
+            <textarea id="credential-input"
+                      placeholder="Paste your Verifiable Credential or Presentation here..."></textarea>
+            <div class="verify-buttons">
+                <button id="verify-credential-button" class="primary-button">Verify</button>
+                <button id="clear-button" class="secondary-button">Clear</button>
+            </div>
+        </div>
+        <div id="verification-result" class="verification-result">
+            <!-- Results will be displayed here -->
+        </div>
+    </section>
+
+    <!-- About Page -->
+    <section id="about-page" class="page">
+        <h2>About IAA</h2>
+        <div class="about-content">
+            <p>IAA (Issuer of Verifiable Credentials) is a PoC SaaS developed to explore the concept of issuing and
+                verifying verifiable credentials according to W3C standards, in order to study the concept, assess
+                compatibility with eIDAS 2.0, and evaluate privacy protections.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 IAA - Issuer of Verifiable Credentials.</p>
+</footer>
+
+<!-- Login Modal -->
+<div id="login-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Login with Verifiable Credential</h3>
+            <button id="close-modal" class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-instructions">Please paste your Verifiable Credential below:</p>
+            <p class="instruction-detail">Your credential will be verified securely.</p>
+            <textarea id="vc-input" class="jwt-input" placeholder="Paste your Verifiable Credential here..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button id="submit-vc-button" class="primary-button">Login</button>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/main.ts"></script>
+</body>
+</html>
