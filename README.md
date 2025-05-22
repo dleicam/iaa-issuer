@@ -3,6 +3,8 @@
 ## Visão Geral
 IAA-Issuer é uma prova de conceito (POC) para um sistema de gestão de identidades e credenciais verificáveis baseado em tecnologias DID (Decentralized Identifiers). O projeto implementa um sistema completo de emissão e verificação de credenciais verificáveis (VCs) e apresentações verificáveis (VPs), com aplicações práticas para gestão de ordens de serviço técnico.
 
+![img.png](img.png)
+
 ## Objetivos
 Este projeto demonstra como as tecnologias de identidade descentralizada podem ser aplicadas em cenários reais de negócio, permitindo:
 
@@ -25,6 +27,8 @@ Este projeto demonstra como as tecnologias de identidade descentralizada podem s
 - Verificação da validade de apresentações verificáveis (VPs)
 - Validação de credenciais e suas propriedades
 - Verificação de credenciais qualificadas e não-qualificadas
+
+![img_1.png](doc/img/img_1.png)
 
 ## Conceitos Técnicos
 
