@@ -19,6 +19,7 @@ Este projeto demonstra como as tecnologias de identidade descentralizada podem s
 - Autenticação na API através de apresentações verificáveis (VPs)
 - Emissão de credenciais adicionais (funcionário, certificações técnicas)
 - Gestão completa de ordens de serviço (WO)
+- Gestão e revogação de credenciais emitidas
 
 ### Verificador (Verifier)
 - Verificação da validade de apresentações verificáveis (VPs)
@@ -82,3 +83,14 @@ As credenciais verificáveis qualificadas (Qualified VCs) são um tipo especial 
 - São utilizadas como base para derivar outras credenciais no sistema
 
 Estas credenciais formam a base do sistema de confiança, permitindo a emissão de credenciais derivadas com diferentes níveis de divulgação seletiva de informações (selective disclosure).
+
+## Gestão e Revogação de Credenciais
+
+O sistema implementa um mecanismo completo de gestão das credenciais emitidas, permitindo:
+
+- Rastreamento de todas as credenciais emitidas e seu status atual
+- Revogação de credenciais quando necessário (por exemplo, em caso de comprometimento, expiração ou mudança de status)
+- Verificação do status de revogação durante o processo de validação
+- Notificação aos portadores de credenciais sobre mudanças de status
+
+Esta funcionalidade é essencial para manter a integridade do sistema de confiança, garantindo que apenas credenciais válidas e atualizadas sejam aceitas pelos verificadores.
