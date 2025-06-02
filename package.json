@@ -10,7 +10,8 @@
     "build:backend": "tsc -p tsconfig.backend.json",
     "build": "npm run build:frontend && npm run build:backend",
     "preview": "vite preview",
-    "start": "node dist/backend/server.js"
+    "start": "node dist/backend/server.js",
+    "test": "vitest"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
