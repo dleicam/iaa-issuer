@@ -22,7 +22,7 @@ describe('WorkOrderService Tests', () => {
   });
 
   test('createWorkOrder should create a new work order successfully with assets', async () => {
-    // Create dummy user and assets first
+    // Create dummy user first
     const dummyUser: UserAttributes = {
       id: 'user-123',
       name: 'Test Technician',
@@ -52,7 +52,7 @@ describe('WorkOrderService Tests', () => {
       description: 'Install HVAC unit',
       status: 'pending',
       userId: createdUser.id,
-      assetIds: ['asset-456', 'asset-789'],  // As per WorkOrderCreationAttributes
+      assetIds: ['asset-456', 'asset-789'],
     };
 
     const createdWorkOrder = await workOrderService.createWorkOrder(workOrderData);
@@ -76,6 +76,7 @@ describe('WorkOrderService Tests', () => {
       description: 'Invalid user test',
       status: 'pending',
       userId: 'non-existent-user-id',
+      assetIds: [],
     };
 
     await expect(workOrderService.createWorkOrder(invalidWorkOrderData)).rejects.toThrow('Failed to create work order.');
@@ -96,13 +97,13 @@ describe('WorkOrderService Tests', () => {
       description: 'Test with invalid asset',
       status: 'pending',
       userId: 'user-124',
-      assetIds: ['non-existent-asset-id'],  // This should cause an error in association
+      assetIds: ['non-existent-asset-id'],
     };
 
     await expect(workOrderService.createWorkOrder(workOrderDataWithInvalidAsset)).rejects.toThrow('Failed to create work order.');
 
     const workOrders = await WorkOrder.findAll();
-    expect(workOrders).toHaveLength(0);  // No work order should be created due to rollback
+    expect(workOrders).toHaveLength(0);
   });
 
   test('getWorkOrderById should retrieve a work order successfully with associations', async () => {
@@ -131,7 +132,6 @@ describe('WorkOrderService Tests', () => {
     };
     const createdWorkOrder = await WorkOrder.create(workOrderData);
 
-    // Manually add association for testing
     await workOrderService.addAssetToWorkOrder(createdWorkOrder.id, dummyAsset.id);
 
     const foundWorkOrder = await workOrderService.getWorkOrderById('wo-004', true);
@@ -249,11 +249,20 @@ describe('WorkOrderService Tests', () => {
   });
 
   test('addAssetToWorkOrder should add an asset successfully', async () => {
+    const dummyUser: UserAttributes = {
+      id: 'user-130',
+      name: 'Test User for Add',
+      did: 'did:user:test_user_add',
+      userType: 'technician',
+      publicKey: 'test_key_add',
+    };
+    await User.create(dummyUser);
+
     const dummyWorkOrder: WorkOrderAttributes = {
       id: 'wo-009',
       description: 'Test order',
       status: 'pending',
-      userId: 'user-130',  // Assume this user exists or create it
+      userId: dummyUser.id,
     };
     await WorkOrder.create(dummyWorkOrder);
 
@@ -277,11 +286,20 @@ describe('WorkOrderService Tests', () => {
   });
 
   test('removeAssetFromWorkOrder should remove an asset successfully', async () => {
+    const dummyUser: UserAttributes = {
+      id: 'user-131',
+      name: 'Test User for Remove',
+      did: 'did:user:test_user_remove',
+      userType: 'technician',
+      publicKey: 'test_key_remove',
+    };
+    await User.create(dummyUser);
+
     const dummyWorkOrder: WorkOrderAttributes = {
       id: 'wo-010',
       description: 'Test order',
       status: 'pending',
-      userId: 'user-131',
+      userId: dummyUser.id,
     };
     await WorkOrder.create(dummyWorkOrder);
 
