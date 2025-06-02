@@ -62,8 +62,9 @@ export interface CredentialModel extends Model<CredentialAttributes>, Credential
 export interface RevocationEntryModel extends Model<RevocationEntryAttributes>, RevocationEntryAttributes {}
 
 
-// DB setup
-const DATABASE_PATH = path.join(__dirname, '../../data', 'issuer.sqlite'); // Corrected path for typical build output
+// Determine storage based on environment
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+const DATABASE_PATH = isTestEnvironment ? ':memory:' : path.join(__dirname, '../../data', 'issuer.sqlite');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -71,8 +72,7 @@ const sequelize = new Sequelize({
   logging: process.env.NODE_ENV === 'development' ? console.log : false, // Log SQL in dev
 });
 
-// Model def
-
+// Model definitions
 export const User = sequelize.define<UserModel>('User', {
   id: {
     type: DataTypes.UUID,
@@ -250,8 +250,7 @@ export const RevocationEntry = sequelize.define<RevocationEntryModel>('Revocatio
 });
 
 
-// Model assoc 
-
+// Model associations
 // User (Technician/Admin) and WorkOrder
 User.hasMany(WorkOrder, { foreignKey: 'userId', as: 'workOrders' });
 WorkOrder.belongsTo(User, { foreignKey: 'userId', as: 'user' }); // Changed 'technician' to 'user' for clarity
@@ -277,20 +276,22 @@ Credential.hasMany(RevocationEntry, { foreignKey: 'credentialId', as: 'revocatio
 RevocationEntry.belongsTo(Credential, { foreignKey: 'credentialId', as: 'credential' });
 
 
-// DB init func
+// DB initialization function
 export async function initializeDatabase(): Promise<void> {
   try {
-    // Ensure the 'data' directory exists
-    const dataDir = path.dirname(DATABASE_PATH);
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-      console.log(`Created database directory: ${dataDir}`);
+    if (!isTestEnvironment) {
+      // Ensure the 'data' directory exists for non-test environments
+      const dataDir = path.dirname(DATABASE_PATH as string);  // Cast to string to avoid TypeScript error
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+        console.log(`Created database directory: ${dataDir}`);
+      }
     }
 
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
-    // Sync all models. { alter: true } is suitable for development.
+    // Sync all models. { alter: true } is suitable for development and testing.
     // For production, consider using migrations.
     await sequelize.sync({ alter: true });
     console.log('All models were synchronized successfully.');
