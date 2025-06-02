@@ -357,6 +357,20 @@ class AppController {
             }
         } catch (error) {
             console.error('Verification failed:', error);
+            let errorMessage = 'Unknown error';
+            let errorDetails = '';
+
+            if (error instanceof Error) {
+                const message = error.message;
+                if (message.includes('Verification failed:')) {
+                    const parts = message.split('Verification failed:');
+                    errorMessage = 'Verification failed';
+                    errorDetails = parts[1].trim();
+                } else {
+                    errorMessage = message;
+                }
+            }
+
             resultElement.innerHTML = `
         <h3>Verification Failed</h3>
         <div class="result error">
@@ -365,7 +379,7 @@ class AppController {
               <span class="status-icon">✗</span>
             </div>
             <div class="status-details">
-              <p class="status-title">Verification Process Failed</p>
+              <p class="status-title">${errorMessage}</p>
               <p class="status-subtitle">An error occurred during the verification process</p>
             </div>
           </div>
@@ -374,7 +388,7 @@ class AppController {
             <h4>Error Details</h4>
             <div class="validation-item invalid">
               <span class="validation-icon">✗</span>
-              <span class="validation-text">${error instanceof Error ? error.message : 'Unknown error'}</span>
+              <span class="validation-text">${errorDetails || 'No specific error details available'}</span>
             </div>
           </div>
         </div>

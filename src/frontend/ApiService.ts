@@ -7,12 +7,14 @@ export class ApiService {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ credential }),
+            body: JSON.stringify({ 
+                presentation: credential.startsWith('ey') ? credential : JSON.parse(credential) 
+            }),
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Verification failed');
+            const errorData = await response.json();
+            throw new Error(`Verification failed: ${errorData.error || 'Unknown error'}`);
         }
 
         return await response.json();
