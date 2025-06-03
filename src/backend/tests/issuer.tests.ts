@@ -25,6 +25,8 @@ describe('IssuerService Integration Tests', () => {
 
   describe('issueAndStoreCredential', () => {
     it('should issue and store a credential successfully', async () => {
+      // Note: credential.service.ts's issueCredential generates a mock credential,
+      // so this test assumes valid output as per its implementation.
       const result = await issuerService.issueAndStoreCredential(
         'did:example:issuer',
         'did:example:subject',
@@ -33,7 +35,7 @@ describe('IssuerService Integration Tests', () => {
         true
       );
 
-      expect(result.decoded.id).toBeDefined();
+      expect(result.decoded.id).toBeDefined();  // Matches credential.service.ts behavior
       expect(result.decoded.type).toContain('VerifiableCredential');
       expect(result.decoded.type).toContain('EmployeeCredential');
 
@@ -44,11 +46,9 @@ describe('IssuerService Integration Tests', () => {
       expect(storedCredential.isRevoked).toBe(false);
     });
 
-    // it('should throw an error on database failure', async () => {
-    //   await expect(
-    //     issuerService.issueAndStoreCredential('invalid:issuer', 'invalid:subject', 'InvalidType', {}, false)
-    //   ).rejects.toThrow('Failed to issue and store credential.');
-    // });
+    // The following test was removed because credential.service.ts does not throw
+    // errors for invalid inputs like 'invalid:issuer'. Instead, it generates a mock.
+    // If database failures need testing, add a separate scenario that simulates them.
   });
 
   describe('revokeCredential', () => {
@@ -91,6 +91,7 @@ describe('IssuerService Integration Tests', () => {
     });
 
     it('should throw an error on database failure', async () => {
+      // This test assumes a database-related failure, which is valid for integration testing.
       await expect(issuerService.revokeCredential('invalid_vcId', 'Reason')).rejects.toThrow('Failed to revoke credential.');
     });
   });
