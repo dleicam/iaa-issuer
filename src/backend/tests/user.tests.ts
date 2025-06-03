@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, vi, beforeEach } from 'vitest';
-import { sequelize, User } from '../db/database';  // Import sequelize and User model
+import sequelize, { User } from '../db/database';  // Import sequelize and User model
 import { UserService } from '../services/user.service';  // Adjust path if necessary
 import { v4 as uuidv4 } from 'uuid';  // For generating realistic UUIDs
 
