@@ -1,15 +1,20 @@
 
+// @ts-ignore
 import * as DidKey from '@digitalbazaar/did-method-key';
+// @ts-ignore
 import * as DidWeb from '@digitalbazaar/did-method-web';
+// @ts-ignore
 import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
+// @ts-ignore
 import {CachedResolver} from '@digitalbazaar/did-io';
+// @ts-ignore
 import {securityLoader} from '@digitalbazaar/security-document-loader';
+// @ts-ignore
 import {contexts as diContexts} from '@digitalbazaar/data-integrity-context';
 
 const loader = securityLoader();
 loader.addDocuments({documents: diContexts});
 
-// Create a custom DID document for the example issuer
 const exampleIssuerDidDocument = {
   "@context": [
     "https://www.w3.org/ns/did/v1",
@@ -81,6 +86,7 @@ didWebDriver.use({
 
 // Override the didWebDriver's get method to provide static DID documents for example.org
 const originalGet = didWebDriver.get.bind(didWebDriver);
+// @ts-ignore
 didWebDriver.get = async function({did}) {
   if (did === 'did:web:example.org:issuer:123') {
     console.log('Providing static DID document for:', did);
@@ -193,7 +199,7 @@ export const getDocumentLoader = async () => {
   return documentLoader;
 };
 
-export const addStaticContext = (url, context) => {
+export const addStaticContext = (url: any, context: any) => {
   loader.addStatic(url, context);
   // Rebuild the document loader to include the new context
   documentLoader = null;

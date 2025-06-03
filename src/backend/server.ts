@@ -5,6 +5,27 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import verificationRoutes from './routes/verification.routes';
 import loginRoutes from './routes/login.routes';
+import vcRoutes from './routes/vc.routes';
+
+// Session store to keep track of valid session tokens
+export const sessions = new Map<string, { 
+  userId: string, 
+  expires: number,
+  vp?: any 
+}>();
+
+// Session expiration time (24 hours)
+export const SESSION_EXPIRATION = 24 * 60 * 60 * 1000;
+
+// Clean up expired sessions every hour
+setInterval(() => {
+  const now = Date.now();
+  for (const [token, session] of sessions.entries()) {
+    if (session.expires < now) {
+      sessions.delete(token);
+    }
+  }
+}, 60 * 60 * 1000);
 
 dotenv.config();
 
@@ -18,6 +39,7 @@ app.use(cookieParser());
 
 app.use('/api/verify', verificationRoutes);
 app.use('/api/login', loginRoutes);
+app.use('/api/vc', vcRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../../dist');
