@@ -542,6 +542,117 @@ main {
   font-size: 0.9rem;
 }
 
+/* Verification Details Styles */
+.verification-details {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.verification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+}
+
+.verification-hint {
+  font-size: 0.8rem;
+  color: var(--light-text);
+  margin-top: 3px;
+  font-style: italic;
+}
+
+.verification-details-content {
+  margin-top: 1.2rem;
+  background-color: rgba(245, 247, 250, 0.5);
+  border-radius: 8px;
+  padding: 1rem;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.verification-section {
+  margin-bottom: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.verification-subsection {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.subsection-title {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.verification-method {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background-color: rgba(245, 247, 250, 0.7);
+  border-radius: 6px;
+  border-left: 3px solid var(--secondary-color);
+}
+
+.verification-method-details {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.method-item {
+  display: flex;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.method-label {
+  flex: 0 0 25%;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.method-value {
+  flex: 1;
+  word-break: break-word;
+}
+
+.credential-result {
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  background-color: rgba(245, 247, 250, 0.7);
+  border-radius: 8px;
+  border-left: 4px solid var(--secondary-color);
+}
+
+.credential-id {
+  margin: 0.8rem 0;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  display: flex;
+}
+
+.credential-label {
+  flex: 0 0 10%;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.credential-value {
+  flex: 1;
+  word-break: break-word;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
 .section-title {
   font-size: 14px;
   color: var(--primary-dark);

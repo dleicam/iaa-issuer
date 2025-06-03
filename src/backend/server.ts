@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import verificationRoutes from './routes/verification.routes';
+import loginRoutes from './routes/login.routes';
 
 dotenv.config();
 
@@ -12,8 +14,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/api/verify', verificationRoutes);
+app.use('/api/login', loginRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../../dist');

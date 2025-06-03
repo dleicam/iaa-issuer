@@ -319,14 +319,135 @@ class AppController {
               </ul>
             </div>
           ` : ''}
+
+          ${result.rawVerificationResult ? `
+            <div class="verification-details">
+              <div class="verification-header">
+                <div>
+                  <h4>Verification Details</h4>
+                  <p class="verification-hint">Detailed information about the verification process</p>
+                </div>
+                <button type="button" class="text-button" id="toggle-verification-details">
+                  <span id="verification-toggle-text">Show Verification Details</span>
+                  <span class="toggle-icon"></span>
+                </button>
+              </div>
+
+              <div class="verification-details-content" id="verification-details-content" style="display: none;">
+                <!-- Overall Verification Status -->
+                <div class="verification-section">
+                  <h5 class="section-title">Overall Status</h5>
+                  <div class="validation-item ${result.rawVerificationResult.verified ? 'valid' : 'invalid'}">
+                    <span class="validation-icon">${result.rawVerificationResult.verified ? '✓' : '✗'}</span>
+                    <span class="validation-text"><strong>Verification Status:</strong> ${result.rawVerificationResult.verified ? 'Valid' : 'Invalid'}</span>
+                  </div>
+                </div>
+
+                <!-- Presentation Result -->
+                ${result.rawVerificationResult.presentationResult ? `
+                  <div class="verification-section">
+                    <h5 class="section-title">Presentation Verification</h5>
+                    <div class="validation-item ${result.rawVerificationResult.presentationResult.verified ? 'valid' : 'invalid'}">
+                      <span class="validation-icon">${result.rawVerificationResult.presentationResult.verified ? '✓' : '✗'}</span>
+                      <span class="validation-text"><strong>Presentation Verified:</strong> ${result.rawVerificationResult.presentationResult.verified ? 'Yes' : 'No'}</span>
+                    </div>
+
+                    <!-- Presentation Results Details -->
+                    ${result.rawVerificationResult.presentationResult.results && result.rawVerificationResult.presentationResult.results.length > 0 ? `
+                      <div class="verification-subsection">
+                        <h6 class="subsection-title">Verification Methods</h6>
+                        ${result.rawVerificationResult.presentationResult.results.map((presResult, index) => `
+                          <div class="verification-method">
+                            <div class="validation-item ${presResult.verified ? 'valid' : 'invalid'}">
+                              <span class="validation-icon">${presResult.verified ? '✓' : '✗'}</span>
+                              <span class="validation-text"><strong>Method ${index + 1}:</strong> ${presResult.verified ? 'Valid' : 'Invalid'}</span>
+                            </div>
+                            ${presResult.verificationMethod ? `
+                              <div class="verification-method-details">
+                                <div class="method-item">
+                                  <span class="method-label">ID:</span>
+                                  <span class="method-value">${presResult.verificationMethod.id || 'N/A'}</span>
+                                </div>
+                                <div class="method-item">
+                                  <span class="method-label">Type:</span>
+                                  <span class="method-value">${presResult.verificationMethod.type || 'N/A'}</span>
+                                </div>
+                                <div class="method-item">
+                                  <span class="method-label">Controller:</span>
+                                  <span class="method-value">${presResult.verificationMethod.controller || 'N/A'}</span>
+                                </div>
+                              </div>
+                            ` : ''}
+                          </div>
+                        `).join('')}
+                      </div>
+                    ` : ''}
+                  </div>
+                ` : ''}
+
+                <!-- Credential Results -->
+                ${result.rawVerificationResult.credentialResults && result.rawVerificationResult.credentialResults.length > 0 ? `
+                  <div class="verification-section">
+                    <h5 class="section-title">Credential Verification</h5>
+                    ${result.rawVerificationResult.credentialResults.map((credResult, credIndex) => `
+                      <div class="credential-result">
+                        <div class="validation-item ${credResult.verified ? 'valid' : 'invalid'}">
+                          <span class="validation-icon">${credResult.verified ? '✓' : '✗'}</span>
+                          <span class="validation-text"><strong>Credential ${credIndex + 1}:</strong> ${credResult.verified ? 'Valid' : 'Invalid'}</span>
+                        </div>
+                        ${credResult.credentialId ? `
+                          <div class="credential-id">
+                            <span class="credential-label">ID:</span>
+                            <span class="credential-value">${credResult.credentialId}</span>
+                          </div>
+                        ` : ''}
+
+                        <!-- Credential Verification Results -->
+                        ${credResult.results && credResult.results.length > 0 ? `
+                          <div class="verification-subsection">
+                            <h6 class="subsection-title">Verification Methods</h6>
+                            ${credResult.results.map((result, resultIndex) => `
+                              <div class="verification-method">
+                                <div class="validation-item ${result.verified ? 'valid' : 'invalid'}">
+                                  <span class="validation-icon">${result.verified ? '✓' : '✗'}</span>
+                                  <span class="validation-text"><strong>Method ${resultIndex + 1}:</strong> ${result.verified ? 'Valid' : 'Invalid'}</span>
+                                </div>
+                                ${result.verificationMethod ? `
+                                  <div class="verification-method-details">
+                                    <div class="method-item">
+                                      <span class="method-label">ID:</span>
+                                      <span class="method-value">${result.verificationMethod.id || 'N/A'}</span>
+                                    </div>
+                                    <div class="method-item">
+                                      <span class="method-label">Type:</span>
+                                      <span class="method-value">${result.verificationMethod.type || 'N/A'}</span>
+                                    </div>
+                                    <div class="method-item">
+                                      <span class="method-label">Controller:</span>
+                                      <span class="method-value">${result.verificationMethod.controller || 'N/A'}</span>
+                                    </div>
+                                  </div>
+                                ` : ''}
+                              </div>
+                            `).join('')}
+                          </div>
+                        ` : ''}
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          ` : ''}
         </div>
       `;
 
             resultElement.style.display = 'block';
 
-            const toggleButton = document.getElementById('toggle-certificate-details');
-            if (toggleButton) {
-                toggleButton.addEventListener('click', () => {
+            // Setup toggle for certificate details if present
+            const toggleCertButton = document.getElementById('toggle-certificate-details');
+            if (toggleCertButton) {
+                toggleCertButton.addEventListener('click', () => {
                     const detailsSection = document.getElementById('certificate-details');
                     const toggleText = document.getElementById('toggle-text');
 
@@ -341,7 +462,7 @@ class AppController {
                                 detailsSection.style.display = 'none';
                             }, 200);
                             toggleText.textContent = 'Show Validation Details';
-                            toggleButton.classList.remove('active');
+                            toggleCertButton.classList.remove('active');
                         } else {
                             // If hidden, show it with a smooth animation
                             detailsSection.style.display = 'block';
@@ -350,7 +471,40 @@ class AppController {
                                 detailsSection.style.opacity = '1';
                             }, 10);
                             toggleText.textContent = 'Hide Validation Details';
-                            toggleButton.classList.add('active');
+                            toggleCertButton.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            // Setup toggle for verification details if present
+            const toggleVerificationButton = document.getElementById('toggle-verification-details');
+            if (toggleVerificationButton) {
+                toggleVerificationButton.addEventListener('click', () => {
+                    const detailsSection = document.getElementById('verification-details-content');
+                    const toggleText = document.getElementById('verification-toggle-text');
+
+                    if (detailsSection && toggleText) {
+                        // Check if the details are currently visible (using computed style)
+                        const isVisible = window.getComputedStyle(detailsSection).display !== 'none';
+
+                        if (isVisible) {
+                            // If visible, hide it with a smooth animation
+                            detailsSection.style.opacity = '0';
+                            setTimeout(() => {
+                                detailsSection.style.display = 'none';
+                            }, 200);
+                            toggleText.textContent = 'Show Verification Details';
+                            toggleVerificationButton.classList.remove('active');
+                        } else {
+                            // If hidden, show it with a smooth animation
+                            detailsSection.style.display = 'block';
+                            // Use setTimeout to ensure the display change has taken effect before animating opacity
+                            setTimeout(() => {
+                                detailsSection.style.opacity = '1';
+                            }, 10);
+                            toggleText.textContent = 'Hide Verification Details';
+                            toggleVerificationButton.classList.add('active');
                         }
                     }
                 });

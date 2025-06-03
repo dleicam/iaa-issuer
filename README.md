@@ -98,3 +98,30 @@ O sistema implementa um mecanismo completo de gestão das credenciais emitidas, 
 - Notificação aos portadores de credenciais sobre mudanças de status
 
 Esta funcionalidade é essencial para manter a integridade do sistema de confiança, garantindo que apenas credenciais válidas e atualizadas sejam aceitas pelos verificadores.
+
+## Autenticação com Verifiable Presentations
+
+O sistema implementa um mecanismo de autenticação baseado em Verifiable Presentations (VPs) com verificação de desafio (challenge):
+
+1. O cliente solicita um desafio ao servidor
+2. O servidor gera um desafio único e o retorna ao cliente
+3. O cliente cria uma Verifiable Presentation que inclui o desafio
+4. O cliente envia a VP para verificação
+5. O servidor verifica a VP e o desafio, autenticando o usuário se a verificação for bem-sucedida
+
+Para mais detalhes sobre o processo de autenticação, consulte a [documentação de autenticação](doc/login-authentication.md).
+
+### Testes
+
+O projeto inclui testes automatizados para verificar o funcionamento correto do sistema de autenticação:
+
+```bash
+# Executar todos os testes
+npm test
+
+# Executar testes com watch mode (para desenvolvimento)
+npm run test:watch
+
+# Executar testes com cobertura
+npm run test:coverage
+```
