@@ -45,14 +45,12 @@ describe('IssuerService Integration Tests', () => {
     });
 
     it('should throw an error if generated VC is missing id', async () => {
-      // This test relies on real service behavior; if it doesn't throw, the test will fail
       await expect(
         issuerService.issueAndStoreCredential('did:example:issuer', 'did:example:subject', 'EmployeeCredential', {}, false)
       ).rejects.toThrow('Generated Verifiable Credential is missing an "id" property in its payload.');
     });
 
     it('should throw an error on database failure', async () => {
-      // Simulate database failure by assuming real operation might fail; in practice, force an error if possible
       await expect(
         issuerService.issueAndStoreCredential('invalid:issuer', 'invalid:subject', 'InvalidType', {}, false)
       ).rejects.toThrow('Failed to issue and store credential.');
@@ -170,10 +168,12 @@ describe('IssuerService Integration Tests', () => {
       );
       const result = await issuerService.getAllIssuedCredentials();
       expect(result.length).toBe(2);
+      expect(result[0].vcId).toBeDefined();  // Additional assertion for robustness
     });
 
-    it('should throw an error on database failure', async () => {
-      await expect(issuerService.getAllIssuedCredentials()).not.toThrow();  // Real operation; adjust if failure occurs
+    it('should not throw an error when no credentials exist', async () => {
+      const result = await issuerService.getAllIssuedCredentials();
+      expect(result.length).toBe(0);  // More specific than just not throwing
     });
   });
 
@@ -202,10 +202,7 @@ describe('IssuerService Integration Tests', () => {
       await issuerService.revokeCredential(issued.decoded.id, 'Reason');
       const result = await issuerService.getRevocationList(true);
       expect(result[0].credential).not.toBeNull();
-    });
-
-    it('should throw an error on database failure', async () => {
-      await expect(issuerService.getRevocationList()).not.toThrow();
+      expect(result[0].credential.vcId).toBeDefined();  // Additional assertion
     });
   });
 
