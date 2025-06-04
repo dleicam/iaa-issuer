@@ -653,6 +653,91 @@ main {
   font-size: 0.9rem;
 }
 
+/* Credential Data Styles */
+.credential-data {
+  margin-top: 0.8rem;
+}
+
+.credential-data-section {
+  margin-bottom: 1.2rem;
+  padding: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-color);
+}
+
+.credential-data-title {
+  display: block;
+  font-size: 13px;
+  color: var(--primary-color);
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+.credential-data-content {
+  padding: 0.5rem;
+}
+
+.credential-types-list {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.credential-types-list li {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.credential-issuer {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.credential-date {
+  display: flex;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.date-label {
+  flex: 0 0 20%;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.date-value {
+  flex: 1;
+}
+
+.credential-subject-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.credential-subject-table tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.credential-subject-table tr:last-child {
+  border-bottom: none;
+}
+
+.credential-subject-table td {
+  padding: 0.5rem;
+  vertical-align: top;
+}
+
+.subject-key {
+  width: 30%;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.subject-value {
+  width: 70%;
+  word-break: break-word;
+}
+
 .section-title {
   font-size: 14px;
   color: var(--primary-dark);

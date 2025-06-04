@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import verificationRoutes from './routes/verification.routes';
 import loginRoutes from './routes/login.routes';
 import vcRoutes from './routes/vc.routes';
+import { vcService } from './utils/vc-service';
 
 // Session store to keep track of valid session tokens
 export const sessions = new Map<string, { 
@@ -65,6 +66,14 @@ async function findAvailablePort(startPort: number): Promise<number> {
 
 async function startServer() {
   try {
+    // Initialize the VC service
+    try {
+      await vcService.initialize();
+      console.log('VC service initialized successfully');
+    } catch (vcError) {
+      console.error('Failed to initialize VC service:', vcError);
+    }
+
     const availablePort = await findAvailablePort(Number(PORT));
 
     app.listen(availablePort, () => {

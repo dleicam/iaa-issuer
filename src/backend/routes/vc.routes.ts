@@ -1,5 +1,7 @@
 import express from 'express';
 import { sessions } from '../server';
+import { employeeVCService } from '../vc-types/employee/employee-vc';
+import { graduationVCService } from '../vc-types/graduation/graduation-vc';
 
 const router = express.Router();
 
@@ -40,21 +42,49 @@ router.post('/request', async (req, res) => {
       });
     }
 
-    if (type !== 'Employee') {
+    if (type !== 'Employee' && type !== 'Graduation') {
       return res.status(400).json({
         success: false,
-        message: 'Invalid type. Currently only "Employee" type is supported.'
+        message: 'Invalid type. Currently only "Employee" and "Graduation" types are supported.'
       });
     }
 
     session.expires = Date.now() + (24 * 60 * 60 * 1000);
 
-    return res.status(200).json({
-      success: true,
-      message: 'Request received successfully',
-      requestedType: type,
-      userId: session.userId
-    });
+    let result;
+
+    if (type === 'Employee') {
+      result = await employeeVCService.issueEmployeeCredentialFromVP(session.vp);
+
+      if (!result.success) {
+        return res.status(500).json({
+          success: false,
+          message: result.message || 'Failed to issue employee credential'
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Employee credential issued successfully',
+        credential: result.credential
+      });
+    } else if (type === 'Graduation') {
+      // Generate random data for graduation credential, but use the name from the VP
+      result = await graduationVCService.generateRandomGraduationCredential(session.vp);
+
+      if (!result.success) {
+        return res.status(500).json({
+          success: false,
+          message: result.message || 'Failed to issue graduation credential'
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Graduation credential issued successfully',
+        credential: result.credential
+      });
+    }
   } catch (error) {
     console.error('Error processing VC request:', error);
     return res.status(500).json({
@@ -63,5 +93,6 @@ router.post('/request', async (req, res) => {
     });
   }
 });
+
 
 export default router;

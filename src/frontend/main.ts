@@ -402,6 +402,104 @@ class AppController {
                           </div>
                         ` : ''}
 
+                        <!-- Credential Data -->
+                        ${result.rawVerificationResult.originalPresentation && 
+                          result.rawVerificationResult.originalPresentation.verifiableCredential && 
+                          result.rawVerificationResult.originalPresentation.verifiableCredential.length > credIndex ? `
+                          <div class="verification-subsection">
+                            <h6 class="subsection-title">Credential Data</h6>
+                            <div class="credential-data">
+                              ${(() => {
+                                const vc = result.rawVerificationResult.originalPresentation.verifiableCredential[credIndex];
+                                const sections = [];
+
+                                // Display credential types
+                                if (vc.type && Array.isArray(vc.type) && vc.type.length > 0) {
+                                  sections.push(`
+                                    <div class="credential-data-section">
+                                      <h7 class="credential-data-title">Types</h7>
+                                      <div class="credential-data-content">
+                                        <ul class="credential-types-list">
+                                          ${vc.type.map(type => `<li>${type}</li>`).join('')}
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  `);
+                                }
+
+                                // Display issuer
+                                if (vc.issuer) {
+                                  sections.push(`
+                                    <div class="credential-data-section">
+                                      <h7 class="credential-data-title">Issuer</h7>
+                                      <div class="credential-data-content">
+                                        <div class="credential-issuer">
+                                          ${typeof vc.issuer === 'string' ? vc.issuer : JSON.stringify(vc.issuer)}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  `);
+                                }
+
+                                // Display issuance and expiration dates
+                                if (vc.issuanceDate || vc.expirationDate) {
+                                  sections.push(`
+                                    <div class="credential-data-section">
+                                      <h7 class="credential-data-title">Validity Period</h7>
+                                      <div class="credential-data-content">
+                                        ${vc.issuanceDate ? `
+                                          <div class="credential-date">
+                                            <span class="date-label">Issued:</span>
+                                            <span class="date-value">${new Date(vc.issuanceDate).toLocaleString()}</span>
+                                          </div>
+                                        ` : ''}
+                                        ${vc.expirationDate ? `
+                                          <div class="credential-date">
+                                            <span class="date-label">Expires:</span>
+                                            <span class="date-value">${new Date(vc.expirationDate).toLocaleString()}</span>
+                                          </div>
+                                        ` : ''}
+                                      </div>
+                                    </div>
+                                  `);
+                                }
+
+                                // Display credential subject
+                                if (vc.credentialSubject) {
+                                  sections.push(`
+                                    <div class="credential-data-section">
+                                      <h7 class="credential-data-title">Credential Subject</h7>
+                                      <div class="credential-data-content">
+                                        <div class="credential-subject">
+                                          ${(() => {
+                                            const subjectEntries = Object.entries(vc.credentialSubject)
+                                              .filter(([key]) => key !== '@context');
+
+                                            return `
+                                              <table class="credential-subject-table">
+                                                <tbody>
+                                                  ${subjectEntries.map(([key, value]) => `
+                                                    <tr>
+                                                      <td class="subject-key">${key}:</td>
+                                                      <td class="subject-value">${this.formatValue(value)}</td>
+                                                    </tr>
+                                                  `).join('')}
+                                                </tbody>
+                                              </table>
+                                            `;
+                                          })()}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  `);
+                                }
+
+                                return sections.join('');
+                              })()}
+                            </div>
+                          </div>
+                        ` : ''}
+
                         <!-- Credential Verification Results -->
                         ${credResult.results && credResult.results.length > 0 ? `
                           <div class="verification-subsection">

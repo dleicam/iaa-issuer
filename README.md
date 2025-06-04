@@ -75,7 +75,33 @@ npm run dev:backend
 # Produção
 npm run build
 npm start
+
+# Regenerar par de chaves para assinatura de credenciais
+npm run generate-keys
 ```
+
+## Gestão de Chaves
+
+O sistema utiliza um par de chaves criptográficas para assinar as credenciais verificáveis emitidas. Este par de chaves é gerado automaticamente na primeira inicialização do sistema e armazenado no diretório `data/keys`.
+
+### Regeneração de Chaves
+
+Em alguns casos, pode ser necessário regenerar o par de chaves, como por exemplo:
+- Quando se deseja iniciar um novo ambiente de emissão
+- Por motivos de segurança (rotação periódica de chaves)
+- Quando as chaves existentes foram comprometidas
+
+Para regenerar o par de chaves, execute o comando:
+```bash
+npm run generate-keys
+```
+
+Este comando irá:
+1. Excluir o arquivo de chaves existente (se houver)
+2. Gerar um novo par de chaves ECDSA P-256
+3. Exibir informações sobre o novo par de chaves gerado, incluindo o DID associado
+
+**Nota**: Após regenerar as chaves, todas as credenciais emitidas anteriormente não poderão ser verificadas com as novas chaves, pois foram assinadas com o par de chaves anterior.
 
 ## Credenciais Verificáveis Qualificadas
 

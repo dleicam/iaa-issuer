@@ -108,7 +108,7 @@ router.post('/', async (req, res) => {
     sessions.set(sessionToken, {
       userId,
       expires: Date.now() + SESSION_EXPIRATION,
-      vp
+      vp: verificationResult.originalPresentation || vp
     });
 
     res.json({
