@@ -51,6 +51,11 @@ export class CredentialService {
     this.resolver = new Resolver({ ...getWebResolver() });
     this.qualifiedService = new QualifiedService(this.resolver);
     this.nonQualifiedService = new NonQualifiedService(this.resolver);
+
+    this.issuerDid = process.env.ISSUER_DID;
+    this.issuerRs256PrivateKey = process.env.ISSUER_RS256_PRIVATE_KEY_PEM;
+    this.issuerRs256Certificate = process.env.ISSUER_RS256_CERTIFICATE_PEM;
+
     try {
         if (process.env.ISSUER_DID_KEY_PRIVATE_KEY_JWK) {
             this.issuerDidKeyPrivateKeyJwk = JSON.parse(process.env.ISSUER_DID_KEY_PRIVATE_KEY_JWK);
@@ -184,19 +189,6 @@ export class CredentialService {
   }
 
 
-  /**
-   * Generates a mock Verifiable Credential JWT and its decoded payload.
-   * This method is intended purely for credential *generation* and does not
-   * handle storage or persistence to a database. Database persistence
-   * is handled by the IssuerService.
-   *
-   * @param issuerDid The DID of the issuer.
-   * @param subjectDid The DID of the credential subject.
-   * @param type The type of the credential.
-   * @param claims An object containing the credential claims.
-   * @param isQualified Whether the credential is a qualified credential.
-   * @returns A Promise resolving to an IssuedCredential object.
-   */
   /**
    * Generates a Verifiable Credential JWT and its decoded payload, cryptographically signed.
    * This method handles the actual signing process based on the `isQualified` flag.
